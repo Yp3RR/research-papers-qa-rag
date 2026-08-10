@@ -3,10 +3,11 @@ from PyPDF2 import PdfReader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import HuggingFaceEmbeddings
-from transformers import pipeline
+from langchain_huggingface import HuggingFaceEmbeddings
+from groq import Groq
 
 st.title("📚 Research Paper Q&A System")
-st.markdown("Upload research papers and ask questions!")
+st.markdown("Upload a research paper and ask questions about it!")
 
 @st.cache_resource
 def load_embeddings():
@@ -14,7 +15,7 @@ def load_embeddings():
 
 @st.cache_resource
 def load_llm():
-    return pipeline("text-generation", model="google/flan-t5-base", max_length=512, device=-1)
+    return Groq(api_key=st.secrets["GROQ_API_KEY"])
 
 embeddings = load_embeddings()
 llm = load_llm()
@@ -26,26 +27,38 @@ if uploaded_file:
     text = ""
     for page in reader.pages:
         text += page.extract_text()
-    
+
     splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
     chunks = splitter.split_text(text)
-    
+
     vectorstore = FAISS.from_texts(chunks, embeddings)
-    
+
     st.success(f"✅ PDF processed! {len(chunks)} chunks created.")
-    
+
     question = st.text_input("Ask a question about the paper:")
-    
+
     if question:
         docs = vectorstore.similarity_search(question, k=3)
         context = "\n\n".join([d.page_content for d in docs])
-        
-        prompt = f"Answer based on context:\n\nContext: {context}\n\nQuestion: {question}\n\nAnswer:"
-        answer = llm(prompt, max_length=200)[0]['generated_text']
-        
+
+        prompt = f"""You are a research assistant. Answer the question using ONLY the context provided below. If the answer isn't in the context, say "I couldn't find this in the document."
+
+Context:
+{context}
+
+Question: {question}
+
+Answer:"""
+
+        response = llm.chat.completions.create(
+            model="llama3-8b-8192",
+            messages=[{"role": "user", "content": prompt}]
+        )
+        answer = response.choices[0].message.content
+
         st.subheader("Answer:")
         st.write(answer)
-        
+
         st.subheader("Sources:")
         for i, doc in enumerate(docs):
             with st.expander(f"Chunk {i+1}"):
