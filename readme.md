@@ -51,7 +51,7 @@ Answer + Source Attribution
 - LangChain (RAG orchestration)
 - sentence-transformers (embeddings)
 - FAISS (vector database)
-- Flan-T5 (text generation)
+- llama-3.1-8b-instant (text generation)
 
 **UI:**
 - Streamlit (web interface)
