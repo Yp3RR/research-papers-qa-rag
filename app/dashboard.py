@@ -6,7 +6,7 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_huggingface import HuggingFaceEmbeddings
 from groq import Groq
 
-st.title("📚 Research Paper Q&A System")
+st.title(" Research Paper Q&A System")
 st.markdown("Upload a research paper and ask questions about it!")
 
 @st.cache_resource
@@ -51,7 +51,7 @@ Question: {question}
 Answer:"""
 
         response = llm.chat.completions.create(
-            model="llama3-8b-8192",
+            model="llama-3.1-8b-instant",
             messages=[{"role": "user", "content": prompt}]
         )
         answer = response.choices[0].message.content
