@@ -39,7 +39,7 @@ Vector Storage (FAISS)
     ↓
 Query → Similarity Search (top-3 chunks)
     ↓
-Context + Question → LLM (Flan-T5)
+Context + Question → LLM (Llama 3.1)
     ↓
 Answer + Source Attribution
 ```
