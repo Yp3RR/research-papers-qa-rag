@@ -108,7 +108,7 @@ streamlit run streamlit_app.py
 - Top-k: 3 chunks per query
 
 **Generation:**
-- Model: `google/flan-t5-base`
+- Model: `llama-3.1-8b-instant`
 - Max length: 200 tokens
 - Device: CPU (no GPU needed)
 
