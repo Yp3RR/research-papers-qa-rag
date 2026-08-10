@@ -135,6 +135,9 @@ B.E. EEE + M.Sc. Mathematics | BITS Pilani
 
 [GitHub](https://github.com/Yp3RR) | [LinkedIn](https://www.linkedin.com/in/yash-patil-27b060312/)
 
+**Live Demo**
+Here is a link for the streamlit app - https://yperresearch-papers-app-rag.streamlit.app/
+
 ## 📝 License
 
 Educational/Portfolio Project
