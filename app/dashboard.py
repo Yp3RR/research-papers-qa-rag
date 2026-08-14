@@ -15,7 +15,13 @@ def load_embeddings():
 
 @st.cache_resource
 def load_llm():
-    return Groq(api_key=st.secrets["GROQ_API_KEY"])
+    api_key = st.secrets.get("GROQ_API_KEY")
+
+    if not api_key:
+        st.error("⚠️ GROQ_API_KEY is missing! Add it under Streamlit Cloud -> Settings -> Secrets.")
+        st.stop()
+
+    return Groq(api_key=api_key)
 
 embeddings = load_embeddings()
 llm = load_llm()
