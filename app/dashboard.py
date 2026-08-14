@@ -51,7 +51,7 @@ Question: {question}
 Answer:"""
 
         response = llm.chat.completions.create(
-            model="llama-3.1-8b-instant",
+            model="llama-3.1-70b-versatile",
             messages=[{"role": "user", "content": prompt}]
         )
         answer = response.choices[0].message.content
